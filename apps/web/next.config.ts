@@ -7,6 +7,8 @@ const contentSecurityPolicy =
     : `default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; connect-src 'self' ${supabaseOrigin}; base-uri 'self'; frame-ancestors 'none'; form-action 'self'; object-src 'none'`;
 
 const nextConfig: NextConfig = {
+  allowedDevOrigins: ["localhost", "127.0.0.1"],
+  ...(process.env.NEXT_DIST_DIR ? { distDir: process.env.NEXT_DIST_DIR } : {}),
   poweredByHeader: false,
   headers: async () => [
     {

@@ -2,6 +2,11 @@
   "name": "warung-os",
   "private": true,
   "packageManager": "pnpm@9.15.4",
+  "pnpm": {
+    "overrides": {
+      "postcss": "8.5.23"
+    }
+  },
   "scripts": {
     "dev": "pnpm --filter @warung-os/web dev",
     "build": "pnpm --filter @warung-os/web build",
