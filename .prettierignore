@@ -6,4 +6,5 @@ test-results
 contracts/lib
 contracts/out
 contracts/cache
+contracts/abi/*.json
 pnpm-lock.yaml

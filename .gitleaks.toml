@@ -1,0 +1,5 @@
+[allowlist]
+  description = "Fixture upstream OpenZeppelin memakai nilai contoh yang menyerupai API key."
+  paths = [
+    '''contracts/lib/''',
+  ]

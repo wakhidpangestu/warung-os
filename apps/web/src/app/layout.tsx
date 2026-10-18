@@ -6,5 +6,9 @@ export const metadata: Metadata = { title: "WarungOS", description: "POS praktis
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   // Beberapa ekstensi browser menambahkan atribut pada body sebelum React menghidrasi.
   // Batas ini hanya menekan mismatch pada body, bukan pada komponen aplikasi.
-  return <html lang="id"><body suppressHydrationWarning>{children}</body></html>;
+  return (
+    <html lang="id">
+      <body suppressHydrationWarning>{children}</body>
+    </html>
+  );
 }

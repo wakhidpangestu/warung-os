@@ -5,27 +5,39 @@ import type {
   PaymentRepository,
   ProviderStatus,
   VerifiedEvent,
-  WebhookResult
+  WebhookResult,
 } from "./types";
 
 export class WebhookProcessor {
   constructor(private readonly repository: PaymentRepository) {}
 
-  async process(adapter: PaymentAdapter, headers: Headers, rawBody: string): Promise<WebhookResult> {
+  async process(
+    adapter: PaymentAdapter,
+    headers: Headers,
+    rawBody: string,
+  ): Promise<WebhookResult> {
     const event = await adapter.verifyWebhook(headers, rawBody);
     if (!event) return "rejected";
     return this.processVerifiedEvent(adapter, event);
   }
 
-  async processReconciliation(adapter: PaymentAdapter, status: ProviderStatus): Promise<WebhookResult> {
+  async processReconciliation(
+    adapter: PaymentAdapter,
+    status: ProviderStatus,
+  ): Promise<WebhookResult> {
     const event: VerifiedEvent = {
       ...status,
-      eventId: status.eventId ?? `reconcile:${status.reference}:${status.status}:${status.occurredAt?.toISOString() ?? "none"}`
+      eventId:
+        status.eventId ??
+        `reconcile:${status.reference}:${status.status}:${status.occurredAt?.toISOString() ?? "none"}`,
     };
     return this.processVerifiedEvent(adapter, event);
   }
 
-  private async processVerifiedEvent(adapter: PaymentAdapter, event: VerifiedEvent): Promise<WebhookResult> {
+  private async processVerifiedEvent(
+    adapter: PaymentAdapter,
+    event: VerifiedEvent,
+  ): Promise<WebhookResult> {
     if (!(await this.repository.recordProviderEvent(adapter.id, event.eventId))) return "duplicate";
 
     const attempt = await this.repository.findAttempt(event.reference);
@@ -39,7 +51,12 @@ export class WebhookProcessor {
 
     try {
       assertPaymentTransition(attempt.paymentStatus, event.status);
-      const saleStatus = event.status === "paid" ? "completed" : event.status === "expired" ? "cancelled" : attempt.saleStatus;
+      const saleStatus =
+        event.status === "paid"
+          ? "completed"
+          : event.status === "expired"
+            ? "cancelled"
+            : attempt.saleStatus;
       if (saleStatus !== attempt.saleStatus) assertSaleTransition(attempt.saleStatus, saleStatus);
       await this.repository.saveAttempt({ ...attempt, paymentStatus: event.status, saleStatus });
       return "applied";

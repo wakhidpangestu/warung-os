@@ -4,7 +4,7 @@ import { WebhookProcessor } from "./webhook-processor";
 export async function reconcilePaymentAttempt(
   repository: PaymentRepository,
   adapter: PaymentAdapter,
-  reference: string
+  reference: string,
 ): Promise<WebhookResult> {
   const attempt = await repository.findAttempt(reference);
   if (!attempt) return "under_review";

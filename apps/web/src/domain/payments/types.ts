@@ -10,12 +10,18 @@ export const PAYMENT_STATUSES = [
   "cancelled",
   "under_review",
   "partially_refunded",
-  "refunded"
+  "refunded",
 ] as const;
 
 export type PaymentStatus = (typeof PAYMENT_STATUSES)[number];
 
-export const SALE_STATUSES = ["draft", "pending_payment", "completed", "cancelled", "voided"] as const;
+export const SALE_STATUSES = [
+  "draft",
+  "pending_payment",
+  "completed",
+  "cancelled",
+  "voided",
+] as const;
 export type SaleStatus = (typeof SALE_STATUSES)[number];
 
 export type PaymentMethod = "cash" | "mock" | "qris_live" | "testnet_crypto";

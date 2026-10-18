@@ -1,4 +1,9 @@
-import type { PaymentAdapter, PaymentRequest, ProviderStatus, VerifiedEvent } from "@/domain/payments/types";
+import type {
+  PaymentAdapter,
+  PaymentRequest,
+  ProviderStatus,
+  VerifiedEvent,
+} from "@/domain/payments/types";
 
 /** Testnet-only typed placeholder. It intentionally has no crypto or money-processing behavior. */
 export class TestnetCryptoAdapter implements PaymentAdapter {
@@ -6,7 +11,11 @@ export class TestnetCryptoAdapter implements PaymentAdapter {
   readonly mode = "testnet" as const;
   readonly capabilities = { dynamicQr: false, refund: false, expiry: false, webhook: false };
 
-  async createPaymentRequest(_input: { reference: string; amountIdr: bigint; expiresAt: Date }): Promise<PaymentRequest> {
+  async createPaymentRequest(_input: {
+    reference: string;
+    amountIdr: bigint;
+    expiresAt: Date;
+  }): Promise<PaymentRequest> {
     throw new Error("Adapter kripto testnet belum diimplementasikan.");
   }
 

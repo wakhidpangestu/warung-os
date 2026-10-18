@@ -6,7 +6,7 @@ const serverEnvSchema = z.object({
   SUPABASE_SERVICE_ROLE_KEY: z.string().min(1),
   AUTH_SECRET: z.string().min(32),
   QRIS_ENABLED: z.enum(["true", "false"]).default("false"),
-  CRON_SECRET: z.string().min(32)
+  CRON_SECRET: z.string().min(32),
 });
 
 export type ServerEnv = z.infer<typeof serverEnvSchema>;
@@ -17,7 +17,7 @@ export function parseServerEnv(input: Record<string, string | undefined>): Serve
     SUPABASE_SERVICE_ROLE_KEY: input.SUPABASE_SERVICE_ROLE_KEY,
     AUTH_SECRET: input.AUTH_SECRET,
     QRIS_ENABLED: input.QRIS_ENABLED,
-    CRON_SECRET: input.CRON_SECRET
+    CRON_SECRET: input.CRON_SECRET,
   });
 }
 

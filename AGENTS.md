@@ -3,9 +3,11 @@
 Berlaku untuk seluruh repo. Baca file ini sebelum mengubah apa pun.
 
 ## Produk
+
 WarungOS: Smart POS untuk warung sembako Indonesia. Prioritas: operasi harian yang andal (cari harga, kasir, stok), lalu QRIS resmi, lalu audit blockchain.
 
 ## Aturan keras (tidak boleh dilanggar)
+
 1. Uang disimpan sebagai integer Rupiah (`bigint`). Dilarang float untuk uang.
 2. Status pembayaran hanya boleh `paid` setelah konfirmasi server-ke-server dari provider (webhook terverifikasi atau query status). Jangan percaya status dari frontend atau screenshot.
 3. Tidak ada integrasi palsu. Jangan klaim provider, kontrak, atau tes berhasil jika belum dijalankan.
@@ -18,12 +20,15 @@ WarungOS: Smart POS untuk warung sembako Indonesia. Prioritas: operasi harian ya
 10. USDT/USDC/IDRX tidak boleh aktif di produksi tanpa persetujuan hukum tertulis (lihat docs/payments/DIGITAL_ASSET_POLICY.md).
 
 ## Stack
+
 Next.js (App Router) + TypeScript strict + Tailwind + shadcn/ui, Supabase (Postgres, Auth, RLS), Zod, TanStack Query, Vitest, Playwright, Foundry, viem, pnpm. Lihat docs/TECH_STACK.md.
 
 ## Struktur
+
 `apps/web` (UI + API), `packages/shared` (domain, uang, state machine), `packages/payments` (adapter), `packages/blockchain` (audit, Merkle), `contracts` (Solidity), `supabase/migrations`, `docs`. Lihat docs/ARCHITECTURE.md.
 
 ## Alur kerja
+
 - Perubahan kecil dan terbaca. Satu fitur, satu PR.
 - Tulis tes bersama kode. Jangan klaim tes lulus jika belum dijalankan; laporkan perintahnya.
 - Jangan menyembunyikan error TypeScript, lint, atau tes gagal. Hindari `any`; jika perlu, beri komentar alasan.
@@ -32,6 +37,7 @@ Next.js (App Router) + TypeScript strict + Tailwind + shadcn/ui, Supabase (Postg
 - Bahasa UI: Indonesia. Zona waktu bisnis: Asia/Jakarta. Simpan waktu dalam UTC.
 
 ## Perintah
+
 ```
 pnpm install
 pnpm dev
@@ -43,4 +49,5 @@ pnpm contracts:test  # forge test
 ```
 
 ## Skill proyek
+
 Ada di `.claude/skills/`: architecture-review, frontend-ui, backend-engineering, database-engineering, payment-integration, blockchain-audit, security-review, testing-and-qa, documentation-maintenance.

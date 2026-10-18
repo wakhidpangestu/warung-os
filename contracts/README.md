@@ -34,9 +34,9 @@ Skrip memberikan `DEFAULT_ADMIN_ROLE` kepada `ADMIN`, memberikan `WRITER_ROLE` k
 
 Hasil `forge snapshot` pada lingkungan ini:
 
-| Fungsi | Gas |
-|---|---:|
-| `recordCommitment` melalui `test_RecordCommitmentByWriterStoresTimestampAndEmitsEvent` | 85,663 |
-| `recordRoot` melalui `test_RecordRootByWriterStoresRecordAndEmitsEvent` | 112,315 |
+| Fungsi                                                                                 |     Gas |
+| -------------------------------------------------------------------------------------- | ------: |
+| `recordCommitment` melalui `test_RecordCommitmentByWriterStoresTimestampAndEmitsEvent` |  85,663 |
+| `recordRoot` melalui `test_RecordRootByWriterStoresRecordAndEmitsEvent`                | 112,315 |
 
 Snapshot lengkap berada di `.gas-snapshot`.

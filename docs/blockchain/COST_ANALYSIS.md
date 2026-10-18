@@ -3,21 +3,25 @@
 **Angka harga gas dan token berubah cepat. Isi tabel dari sumber resmi dan hasil ukur `forge snapshot` sebelum memutuskan. Jangan memakai angka di bawah sebagai fakta.**
 
 ## Rumus
+
 ```
 biaya_per_tx_IDR = gas_used x gas_price(gwei) x 1e-9 x harga_token_native_IDR
 mode single  = N transaksi/hari x biaya_per_commit
 mode batch   = jumlah batch/hari x biaya_per_root
 ```
+
 Perkiraan kasar gas (ukur ulang): tx dasar 21.000 + penulisan satu slot storage baru sekitar 20.000-25.000 + overhead event/kontrak, jadi satu commit kira-kira puluhan ribu gas. `recordRoot` mirip satu commit. Batch menghemat dengan faktor sekitar N (jumlah transaksi per batch).
 
 ## Contoh simulasi (parametrik, isi sendiri)
-| Skenario | Transaksi/hari | Mode | Tx on-chain/hari |
-|---|---|---|---|
-| Warung kecil | 100 | single | 100 |
-| Warung kecil | 100 | batch harian | 1 |
-| Ramai | 500 | batch per 100 | 5 |
+
+| Skenario     | Transaksi/hari | Mode          | Tx on-chain/hari |
+| ------------ | -------------- | ------------- | ---------------- |
+| Warung kecil | 100            | single        | 100              |
+| Warung kecil | 100            | batch harian  | 1                |
+| Ramai        | 500            | batch per 100 | 5                |
 
 ## Perbandingan jaringan (kualitatif)
+
 Tanggal akses semua sumber pada tabel: 18 Oktober 2026. Klaim biaya tidak menggantikan pengukuran `forge snapshot` dan kuotasi gas saat keputusan dibuat.
 | Kriteria | Polygon PoS | Base | Catatan |
 |---|---|---|---|
@@ -31,11 +35,13 @@ Tanggal akses semua sumber pada tabel: 18 Oktober 2026. Klaim biaya tidak mengga
 Rekomendasi kerja: mulai di testnet salah satu jaringan di atas dengan mode batch. Putuskan jaringan produksi setelah tabel terisi dan setelah ada ukur gas nyata. Konfigurasi, bukan hardcode.
 
 ## Trade-off mode
-| Aspek | Single | Batch Merkle |
-|---|---|---|
-| Biaya | Linear dengan transaksi | Hampir tetap per periode |
-| Latensi bukti | Menit | Sampai batch ditutup |
-| Verifikasi | Baca satu commitment | Proof + root |
-| Kompleksitas | Rendah | Sedang |
-| Keamanan | Sama (hash on-chain) | Sama, tergantung integritas proof |
+
+| Aspek         | Single                  | Batch Merkle                      |
+| ------------- | ----------------------- | --------------------------------- |
+| Biaya         | Linear dengan transaksi | Hampir tetap per periode          |
+| Latensi bukti | Menit                   | Sampai batch ditutup              |
+| Verifikasi    | Baca satu commitment    | Proof + root                      |
+| Kompleksitas  | Rendah                  | Sedang                            |
+| Keamanan      | Sama (hash on-chain)    | Sama, tergantung integritas proof |
+
 Konsekuensi memilih single: biaya dan beban operasional naik seiring volume, dan kegagalan chain memengaruhi banyak job kecil. Arsitektur mendukung keduanya tanpa mengubah logika POS karena hanya adapter dan konfigurasi yang berbeda.

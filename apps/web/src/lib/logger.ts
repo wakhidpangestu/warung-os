@@ -4,8 +4,8 @@ function redact(context: LogContext): LogContext {
   return Object.fromEntries(
     Object.entries(context).map(([key, value]) => [
       key,
-      /secret|token|password|authorization|cookie|key/i.test(key) ? "[REDACTED]" : value
-    ])
+      /secret|token|password|authorization|cookie|key/i.test(key) ? "[REDACTED]" : value,
+    ]),
   );
 }
 
@@ -15,5 +15,5 @@ export const logger = {
   },
   error(event: string, context: LogContext = {}) {
     console.error(JSON.stringify({ level: "error", event, ...redact(context) }));
-  }
+  },
 };

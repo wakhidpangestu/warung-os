@@ -11,7 +11,9 @@ export async function setupShop(_: SetupState, formData: FormData): Promise<Setu
   const parsed = setupSchema.safeParse({ name: formData.get("name") });
   if (!parsed.success) return { error: "Nama toko harus terdiri dari 2 sampai 120 karakter." };
   const supabase = await createClient();
-  const { data: { user } } = await supabase.auth.getUser();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
   if (!user) redirect("/login");
   const { error } = await supabase.rpc("create_shop_for_owner", { shop_name: parsed.data.name });
   if (error) return { error: "Toko belum dapat dibuat. Coba lagi." };

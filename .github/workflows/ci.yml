@@ -14,22 +14,38 @@ jobs:
         with: { version: 9.15.4 }
       - uses: actions/setup-node@v4
         with: { node-version: 22 }
-      # Lockfile dibuat saat bootstrap lokal pertama. Setelah file itu dikomit,
-      # CI akan menolak perubahan dependensi yang tidak sinkron.
-      - run: pnpm install --no-frozen-lockfile
+      - run: pnpm install --frozen-lockfile
       - run: pnpm lint
       - run: pnpm typecheck
       - run: pnpm test
       - run: pnpm audit --prod
       - run: pnpm exec prettier --check .
       - uses: gitleaks/gitleaks-action@v2
+        with:
+          config-path: .gitleaks.toml
 
   database:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with: { version: 9.15.4 }
+      - uses: actions/setup-node@v4
+        with: { node-version: 22 }
+      - run: pnpm install --frozen-lockfile
       - uses: supabase/setup-cli@v1
         with: { version: latest }
       - run: supabase start
       - run: supabase db reset
       - run: supabase test db
+      - name: Export local Supabase public environment
+        shell: bash
+        run: |
+          {
+            echo "NEXT_PUBLIC_APP_NAME=WarungOS"
+            echo "NEXT_PUBLIC_APP_URL=http://127.0.0.1:3000"
+            supabase status --output env | sed -n 's/^API_URL="\(.*\)"$/NEXT_PUBLIC_SUPABASE_URL=\1/p'
+            supabase status --output env | sed -n 's/^ANON_KEY="\(.*\)"$/NEXT_PUBLIC_SUPABASE_ANON_KEY=\1/p'
+          } >> "$GITHUB_ENV"
+      - run: pnpm --filter @warung-os/web exec playwright install --with-deps chromium
+      - run: pnpm test:e2e

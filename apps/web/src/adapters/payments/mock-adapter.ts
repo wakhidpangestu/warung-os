@@ -1,6 +1,12 @@
 import { createHmac, timingSafeEqual } from "node:crypto";
 import type { Rupiah } from "@/lib/money";
-import type { PaymentAdapter, PaymentRequest, PaymentStatus, ProviderStatus, VerifiedEvent } from "@/domain/payments/types";
+import type {
+  PaymentAdapter,
+  PaymentRequest,
+  PaymentStatus,
+  ProviderStatus,
+  VerifiedEvent,
+} from "@/domain/payments/types";
 
 interface MockEventBody {
   eventId: string;
@@ -19,8 +25,17 @@ export class MockPaymentAdapter implements PaymentAdapter {
 
   constructor(private readonly webhookSecret: string) {}
 
-  async createPaymentRequest(input: { reference: string; amountIdr: Rupiah; expiresAt: Date }): Promise<PaymentRequest> {
-    const status: ProviderStatus = { reference: input.reference, status: "awaiting_customer", amountIdr: input.amountIdr, currency: "IDR" };
+  async createPaymentRequest(input: {
+    reference: string;
+    amountIdr: Rupiah;
+    expiresAt: Date;
+  }): Promise<PaymentRequest> {
+    const status: ProviderStatus = {
+      reference: input.reference,
+      status: "awaiting_customer",
+      amountIdr: input.amountIdr,
+      currency: "IDR",
+    };
     this.statuses.set(input.reference, status);
     return { ...input, mode: this.mode, displayPayload: `MOCK://PAY/${input.reference}` };
   }
@@ -47,7 +62,7 @@ export class MockPaymentAdapter implements PaymentAdapter {
         status: parsed.status,
         amountIdr: BigInt(parsed.amountIdr),
         currency: parsed.currency,
-        occurredAt: new Date(parsed.occurredAt)
+        occurredAt: new Date(parsed.occurredAt),
       };
     } catch {
       return null;

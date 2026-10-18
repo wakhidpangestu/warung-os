@@ -8,14 +8,16 @@ const buttonVariants = cva(
     variants: {
       variant: {
         default: "bg-brand text-brand-foreground hover:bg-green-800",
-        secondary: "bg-slate-200 text-slate-900 hover:bg-slate-300"
-      }
+        secondary: "bg-slate-200 text-slate-900 hover:bg-slate-300",
+      },
     },
-    defaultVariants: { variant: "default" }
-  }
+    defaultVariants: { variant: "default" },
+  },
 );
 
-export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement>, VariantProps<typeof buttonVariants> {}
+export interface ButtonProps
+  extends ButtonHTMLAttributes<HTMLButtonElement>,
+    VariantProps<typeof buttonVariants> {}
 
 export function Button({ className, variant, ...props }: ButtonProps) {
   return <button className={cn(buttonVariants({ variant }), className)} {...props} />;

@@ -6,8 +6,8 @@ export default tseslint.config(
   ...tseslint.configs.recommended,
   {
     rules: {
-      "@typescript-eslint/no-unused-vars": ["error", { argsIgnorePattern: "^_" }]
-    }
+      "@typescript-eslint/no-unused-vars": ["error", { argsIgnorePattern: "^_" }],
+    },
   },
   {
     files: ["src/domain/**/*.{ts,tsx}"],
@@ -18,12 +18,13 @@ export default tseslint.config(
           patterns: [
             {
               group: ["next/*", "@/app/*"],
-              message: "Domain harus tetap murni dan tidak boleh bergantung pada Next.js atau app layer."
-            }
-          ]
-        }
-      ]
-    }
+              message:
+                "Domain harus tetap murni dan tidak boleh bergantung pada Next.js atau app layer.",
+            },
+          ],
+        },
+      ],
+    },
   },
-  { ignores: [".next/**", "node_modules/**", "playwright-report/**", "test-results/**"] }
+  { ignores: [".next/**", "node_modules/**", "playwright-report/**", "test-results/**"] },
 );

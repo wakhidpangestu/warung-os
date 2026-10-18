@@ -16,7 +16,10 @@ export class PaymentAdapterRegistry {
     this.adapters.set(adapter.id, adapter);
   }
 
-  getEnabled(method: PaymentMethod, shopEnabledMethods: ReadonlySet<PaymentMethod>): PaymentAdapter {
+  getEnabled(
+    method: PaymentMethod,
+    shopEnabledMethods: ReadonlySet<PaymentMethod>,
+  ): PaymentAdapter {
     const adapter = this.adapters.get(method);
     if (!adapter || !shopEnabledMethods.has(method) || !this.isFeatureEnabled(method)) {
       throw new PaymentMethodDisabledError(method);

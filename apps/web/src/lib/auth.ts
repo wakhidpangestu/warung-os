@@ -5,10 +5,13 @@ import type { ShopRole } from "@/domain/iam/roles";
 
 export type Membership = { shop_id: string; role: ShopRole; shops: { name: string }[] };
 
-export async function getSessionAndMembership(): Promise<{ userId: string; memberships: Membership[] }> {
+export async function getSessionAndMembership(): Promise<{
+  userId: string;
+  memberships: Membership[];
+}> {
   const supabase = await createClient();
   const {
-    data: { user }
+    data: { user },
   } = await supabase.auth.getUser();
 
   if (!user) redirect("/login");

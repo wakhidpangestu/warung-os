@@ -7,12 +7,12 @@ const config: Config = {
       colors: {
         brand: {
           DEFAULT: "#166534",
-          foreground: "#ffffff"
-        }
-      }
-    }
+          foreground: "#ffffff",
+        },
+      },
+    },
   },
-  plugins: []
+  plugins: [],
 };
 
 export default config;

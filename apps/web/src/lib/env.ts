@@ -5,7 +5,7 @@ const publicEnvSchema = z
     NEXT_PUBLIC_APP_NAME: z.string().trim().min(1).default("WarungOS"),
     NEXT_PUBLIC_APP_URL: z.string().url(),
     NEXT_PUBLIC_SUPABASE_URL: z.string().url(),
-    NEXT_PUBLIC_SUPABASE_ANON_KEY: z.string().min(1)
+    NEXT_PUBLIC_SUPABASE_ANON_KEY: z.string().min(1),
   })
   .strict();
 
@@ -16,7 +16,7 @@ export function parsePublicEnv(input: Record<string, string | undefined>): Publi
     NEXT_PUBLIC_APP_NAME: input.NEXT_PUBLIC_APP_NAME,
     NEXT_PUBLIC_APP_URL: input.NEXT_PUBLIC_APP_URL,
     NEXT_PUBLIC_SUPABASE_URL: input.NEXT_PUBLIC_SUPABASE_URL,
-    NEXT_PUBLIC_SUPABASE_ANON_KEY: input.NEXT_PUBLIC_SUPABASE_ANON_KEY
+    NEXT_PUBLIC_SUPABASE_ANON_KEY: input.NEXT_PUBLIC_SUPABASE_ANON_KEY,
   });
 }
 

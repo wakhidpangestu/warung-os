@@ -10,7 +10,7 @@ const paymentTransitions: Readonly<Record<PaymentStatus, readonly PaymentStatus[
   cancelled: ["under_review"],
   under_review: [],
   partially_refunded: ["refunded"],
-  refunded: ["under_review"]
+  refunded: ["under_review"],
 };
 
 const saleTransitions: Readonly<Record<SaleStatus, readonly SaleStatus[]>> = {
@@ -18,14 +18,14 @@ const saleTransitions: Readonly<Record<SaleStatus, readonly SaleStatus[]>> = {
   pending_payment: ["completed", "cancelled"],
   completed: ["voided"],
   cancelled: [],
-  voided: []
+  voided: [],
 };
 
 function assertFromTable<T extends string>(
   table: Readonly<Record<T, readonly T[]>>,
   from: T,
   to: T,
-  stateMachine: string
+  stateMachine: string,
 ): void {
   if (!table[from].includes(to)) {
     throw new Error(`Transisi ${stateMachine} tidak valid: ${from} ke ${to}.`);

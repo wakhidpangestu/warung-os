@@ -3,6 +3,7 @@
 Modular monolith Next.js + Supabase Postgres. Layanan eksternal diakses lewat adapter. Efek samping lewat outbox.
 
 ## Diagram sistem
+
 ```mermaid
 flowchart LR
   subgraph Client[PWA / APK Capacitor]
@@ -30,19 +31,21 @@ flowchart LR
 ```
 
 ## Modul domain
-| Modul | Tanggung jawab |
-|---|---|
-| catalog | produk, kategori, harga, riwayat harga, CSV |
-| inventory | saldo, movement, validasi stok |
-| checkout | keranjang server, pembuatan transaksi, state machine |
-| payments | adapter, payment_attempts, webhook, rekonsiliasi |
-| reports | agregasi harian/mingguan/bulanan, kas |
-| audit | payload kanonik, commitment, outbox, batch, verifikasi |
-| iam | profil, membership, peran, PIN, audit log |
+
+| Modul     | Tanggung jawab                                         |
+| --------- | ------------------------------------------------------ |
+| catalog   | produk, kategori, harga, riwayat harga, CSV            |
+| inventory | saldo, movement, validasi stok                         |
+| checkout  | keranjang server, pembuatan transaksi, state machine   |
+| payments  | adapter, payment_attempts, webhook, rekonsiliasi       |
+| reports   | agregasi harian/mingguan/bulanan, kas                  |
+| audit     | payload kanonik, commitment, outbox, batch, verifikasi |
+| iam       | profil, membership, peran, PIN, audit log              |
 
 Aturan dependensi: UI → API → domain → DB. Domain tidak tahu Next.js. Adapter tidak tahu UI.
 
 ## State machine terpisah
+
 ```mermaid
 stateDiagram-v2
   [*] --> draft
@@ -51,9 +54,11 @@ stateDiagram-v2
   pending_payment --> cancelled: dibatalkan/expired
   completed --> voided: void berizin
 ```
+
 **sale_status:** draft, pending_payment, completed, cancelled, voided.
 **payment_status:** pending, awaiting_customer, processing, paid, expired, failed, cancelled, under_review, partially_refunded, refunded.
 Transisi valid payment:
+
 - pending → awaiting_customer | cancelled | failed
 - awaiting_customer → processing | paid | expired | cancelled | failed | under_review
 - processing → paid | failed | under_review
@@ -66,6 +71,7 @@ Transisi valid payment:
 Transisi ditegakkan di server dengan fungsi `assertTransition(from, to)` dan constraint/trigger DB. Perbedaan: sale dibuat ≠ pembayaran dimulai ≠ pembayaran terkonfirmasi ≠ stok dikomit ≠ refund diminta ≠ refund dikonfirmasi ≠ audit terkonfirmasi.
 
 ## Checkout tunai
+
 ```mermaid
 sequenceDiagram
   participant K as Kasir UI
@@ -80,6 +86,7 @@ sequenceDiagram
 ```
 
 ## Checkout QRIS
+
 ```mermaid
 sequenceDiagram
   participant K as Kasir UI
@@ -100,6 +107,7 @@ sequenceDiagram
 ```
 
 ## Pembayaran gagal / webhook retry
+
 ```mermaid
 sequenceDiagram
   participant P as Provider
@@ -116,6 +124,7 @@ sequenceDiagram
 ```
 
 ## Refund
+
 ```mermaid
 sequenceDiagram
   participant O as Owner
@@ -128,9 +137,11 @@ sequenceDiagram
   P-->>A: webhook refund confirmed
   A->>D: refund(confirmed), payment partially_refunded/refunded, movement balik stok opsional
 ```
+
 Tunai: refund dicatat manual dengan izin Owner dan masuk rekonsiliasi kas.
 
 ## Audit blockchain
+
 ```mermaid
 sequenceDiagram
   participant D as Postgres
@@ -148,10 +159,13 @@ sequenceDiagram
 ```
 
 ## Pekerjaan latar belakang
+
 Postgres outbox + endpoint cron (Vercel Cron atau pg_cron memicu HTTP). Tabel `blockchain_job_outbox` dengan `FOR UPDATE SKIP LOCKED`, backoff eksponensial, dead-letter setelah N kali. Batas serverless: durasi fungsi pendek, jadi tiap job kecil dan idempoten. Bila volume atau latensi menuntut, pindah ke worker Node terpisah (ADR 001 revisit).
 
 ## Multi-tenant
+
 `shop_id` di semua tabel bisnis, RLS berbasis `shop_memberships`, plus otorisasi di server.
 
 ## Struktur repo
+
 Lihat bagian "Struktur" di `TECH_STACK.md`.

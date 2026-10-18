@@ -5,7 +5,7 @@ const permissions = {
   owner: ["manage_shop", "manage_staff", "view_dashboard"],
   cashier: ["view_dashboard"],
   inventory: ["view_dashboard"],
-  auditor: ["view_dashboard"]
+  auditor: ["view_dashboard"],
 } as const;
 
 export type Permission = (typeof permissions.owner)[number];

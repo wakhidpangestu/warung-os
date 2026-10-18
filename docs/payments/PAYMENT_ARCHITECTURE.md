@@ -1,6 +1,7 @@
 # Arsitektur Pembayaran
 
 ## Prinsip
+
 1. Status bayar hanya dari konfirmasi server provider yang terverifikasi.
 2. Satu attempt = satu transaksi internal = satu referensi unik.
 3. Pemrosesan idempoten.
@@ -8,11 +9,16 @@
 5. Mock, sandbox, dan nyata dibedakan di server dan UI.
 
 ## Interface
+
 ```ts
 interface PaymentAdapter {
   id: string;
   capabilities: { dynamicQr: boolean; refund: boolean; expiry: boolean; webhook: boolean };
-  createPaymentRequest(i: { reference: string; amountIdr: number; expiresAt: Date }): Promise<PaymentRequest>;
+  createPaymentRequest(i: {
+    reference: string;
+    amountIdr: number;
+    expiresAt: Date;
+  }): Promise<PaymentRequest>;
   getPaymentStatus(reference: string): Promise<ProviderStatus>;
   verifyWebhook(headers: Headers, rawBody: string): Promise<VerifiedEvent | null>;
   expirePaymentRequest(reference: string): Promise<void>;
@@ -20,31 +26,39 @@ interface PaymentAdapter {
   refundPayment?(i: RefundInput): Promise<RefundResult>;
 }
 ```
+
 Implementasi: `cash`, `mock`, `qris-<provider>`, `testnet-crypto`. Cash tidak memakai webhook, langsung `paid` saat uang diterima dan dicatat.
 
 ## Pemetaan status
+
 Setiap adapter punya tabel pemetaan status provider → `payment_status` internal, diuji. Status provider tak dikenal menjadi `under_review`.
 
 ## Feature flag
+
 `FEATURE_QRIS_LIVE`, `FEATURE_CRYPTO_TESTNET`, `FEATURE_CRYPTO_LIVE` (env) AND setting `payment_methods_enabled` per shop. Keduanya harus benar. Pemeriksaan di `checkout` sisi server.
 
 ## Fee
+
 `payment_fee_idr` dicatat per attempt jika provider melaporkan, dipakai di laporan (bruto, diskon, refund, bersih, fee, estimasi laba).
 
 ## Mode
-| Mode | Sumber | Uang nyata | Lencana UI |
-|---|---|---|---|
-| mock | Adapter lokal | tidak | MOCK |
-| sandbox | Sandbox provider | tidak | SANDBOX |
-| live | Provider produksi | ya | tanpa lencana |
+
+| Mode    | Sumber            | Uang nyata | Lencana UI    |
+| ------- | ----------------- | ---------- | ------------- |
+| mock    | Adapter lokal     | tidak      | MOCK          |
+| sandbox | Sandbox provider  | tidak      | SANDBOX       |
+| live    | Provider produksi | ya         | tanpa lencana |
+
 Live hanya aktif jika onboarding selesai dan env produksi diatur.
 
 ## Detail
+
 `QRIS_INTEGRATION.md`, `WEBHOOK_SECURITY.md`, `PAYMENT_RECONCILIATION.md`, `DIGITAL_ASSET_POLICY.md`.
 
 ## Diagram sequence
 
 ### Checkout tunai
+
 ```mermaid
 sequenceDiagram
   participant K as Kasir (UI)
@@ -58,6 +72,7 @@ sequenceDiagram
 ```
 
 ### Checkout QRIS dan webhook (termasuk retry)
+
 ```mermaid
 sequenceDiagram
   participant K as Kasir
@@ -84,6 +99,7 @@ sequenceDiagram
 ```
 
 ### Pembayaran gagal atau kedaluwarsa
+
 ```mermaid
 sequenceDiagram
   participant S as Server
@@ -96,6 +112,7 @@ sequenceDiagram
 ```
 
 ### Refund (hanya jika provider mendukung)
+
 ```mermaid
 sequenceDiagram
   participant O as Owner
