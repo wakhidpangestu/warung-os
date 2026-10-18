@@ -1,9 +1,10 @@
 import { expect, test } from "@playwright/test";
 
 test("pengguna baru diarahkan ke setup toko setelah login", async ({ page }) => {
+  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL ?? "http://127.0.0.1:54321";
   const email = `e2e-${crypto.randomUUID()}@warung.local`;
   const password = "Demo12345!";
-  const response = await page.request.post("http://127.0.0.1:54321/auth/v1/signup", {
+  const response = await page.request.post(`${supabaseUrl}/auth/v1/signup`, {
     headers: { apikey: process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ?? "" },
     data: { email, password },
   });

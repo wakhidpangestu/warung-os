@@ -31,5 +31,6 @@ export default defineConfig({
         env: { ...process.env, NEXT_DIST_DIR: `.next-playwright-${devPort}` },
         url: baseURL,
         reuseExistingServer: !process.env.CI,
+        timeout: 120 * 1000,
       },
 });
