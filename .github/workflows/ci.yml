@@ -37,7 +37,7 @@ jobs:
         with: { node-version: 22 }
       - run: pnpm install --frozen-lockfile
       - uses: supabase/setup-cli@v1
-        with: { version: latest }
+        with: { version: 2.20.12 }
       - run: supabase start
       - run: supabase db reset
       - run: supabase test db
