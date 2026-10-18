@@ -1,0 +1,23 @@
+{
+  "name": "warung-os",
+  "private": true,
+  "packageManager": "pnpm@9.15.4",
+  "scripts": {
+    "dev": "pnpm --filter @warung-os/web dev",
+    "build": "pnpm --filter @warung-os/web build",
+    "lint": "pnpm --filter @warung-os/web lint",
+    "typecheck": "pnpm --filter @warung-os/web typecheck",
+    "test": "pnpm --filter @warung-os/web test",
+    "test:e2e": "pnpm --filter @warung-os/web test:e2e",
+    "db:reset": "supabase db reset",
+    "db:test": "supabase test db",
+    "contracts:test": "forge test",
+    "format": "prettier --write .",
+    "format:check": "prettier --check ."
+  },
+  "devDependencies": {
+    "prettier": "3.4.2",
+    "prettier-plugin-tailwindcss": "0.6.9",
+    "supabase": "2.20.12"
+  }
+}
