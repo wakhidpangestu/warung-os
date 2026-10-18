@@ -26,3 +26,4 @@ Dokumen hidup. Perbarui seiring implementasi.
 - `pnpm db:reset`, `pnpm db:test`, dan `pnpm test:e2e` telah lulus secara lokal pada 18 Oktober 2026. E2E memakai Chrome lokal; CI memasang Chromium sendiri.
 - `pnpm audit --prod` lulus secara lokal pada 18 Oktober 2026 setelah pembaruan Next.js, Supabase, Playwright, dan override PostCSS. Audit harus tetap dijalankan di CI untuk setiap perubahan dependensi.
 - Rate limiting login dan PIN kasir belum diimplementasikan. PIN kasir serta pengelolaan staf berada di ruang lingkup sprint setelah fondasi IAM.
+- Gerbang kualitas: `pnpm verify` adalah gerbang merge lokal wajib sebelum integrasi branch, dan CI GitHub adalah gerbang kedua setelah push. Untuk worker atau branch yang tidak menyentuh Supabase, `pnpm verify:fast` digunakan untuk validasi cepat tanpa db:reset, db:test, dan test:e2e.

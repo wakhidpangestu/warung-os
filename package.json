@@ -18,7 +18,9 @@
     "db:test": "supabase test db",
     "contracts:test": "forge test",
     "format": "prettier --write .",
-    "format:check": "prettier --check ."
+    "format:check": "prettier --check .",
+    "verify": "pnpm format:check && pnpm lint && pnpm typecheck && pnpm test && pnpm db:reset && pnpm db:test && pnpm test:e2e && pnpm build",
+    "verify:fast": "pnpm format:check && pnpm lint && pnpm typecheck && pnpm test"
   },
   "devDependencies": {
     "prettier": "3.4.2",
