@@ -50,4 +50,4 @@ Hanya dengan alasan jelas di PR. Lockfile wajib, versi dipin.
 
 ## Status bootstrap Sprint 1
 
-Workspace pnpm dan manifest dependensi telah dibuat pada Sprint 1. `pnpm-lock.yaml` belum dapat dibuat di lingkungan implementasi karena executable pnpm lokal kehilangan binary native. Sebelum merge, jalankan `corepack pnpm install` pada mesin dengan akses registry, commit lockfile yang dihasilkan, lalu ubah kembali CI menjadi `pnpm install --frozen-lockfile`.
+Workspace pnpm, manifest dependensi, dan `pnpm-lock.yaml` telah dibuat pada Sprint 1. CI memakai `pnpm install --frozen-lockfile` untuk memastikan instalasi reproduktibel.

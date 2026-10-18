@@ -24,5 +24,5 @@ Dokumen hidup. Perbarui seiring implementasi.
 ## Sprint 1
 
 - `pnpm db:reset`, `pnpm db:test`, dan `pnpm test:e2e` telah lulus secara lokal pada 18 Oktober 2026. E2E memakai Chrome lokal; CI memasang Chromium sendiri.
-- `pnpm audit --prod` masih gagal karena dependensi terkunci, terutama Next.js 15.1.3, memiliki advisory keamanan. Upgrade belum dapat diselesaikan karena unduhan registry paket macet pada lingkungan lokal ini.
+- `pnpm audit --prod` lulus secara lokal pada 18 Oktober 2026 setelah pembaruan Next.js, Supabase, Playwright, dan override PostCSS. Audit harus tetap dijalankan di CI untuk setiap perubahan dependensi.
 - Rate limiting login dan PIN kasir belum diimplementasikan. PIN kasir serta pengelolaan staf berada di ruang lingkup sprint setelah fondasi IAM.
